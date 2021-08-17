@@ -1,0 +1,1025 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Book API
+  description: For getting and updating details of books
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      description: get books details
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Books'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+    post:
+      tags:
+        - Books
+      description: add book details
+      requestBody:
+        description: Book object
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Book' 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: Status code
+                    example: 200
+                  message:
+                    type: string
+                    description: Detail for result
+                    example: Added Book
+                  result:
+                   $ref: '#/components/schemas/Book'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Book Details Not available"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 400
+                  message:
+                    type: string
+                    description: status string
+                    example: "Bad Request"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 409
+                  message:
+                    type: string
+                    description: status string
+                    example: "Conflict"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+  /books/{id}:
+    get:
+      tags:
+        - Books
+      description: Returns single book object based on ID
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: search results matching criteria
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  result:
+                   $ref: '#/components/schemas/Book'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Book Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+    put:
+      tags:
+        - Books
+      description: Update Book details based on id
+      parameters:
+      - in: path
+        name: id
+        description: Book ID to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Book object
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Book'
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  result:
+                   $ref: '#/components/schemas/Book'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 400
+                  message:
+                    type: string
+                    description: status string
+                    example: "Bad Request"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Book Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 409
+                  message:
+                    type: string
+                    description: status string
+                    example: "Conflict"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+    delete:
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: delete book from DB
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  message:
+                    type: string
+                    example: book deleted.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Book Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+  /books/{id}/reviews:
+    get:
+      tags:
+        - Reviews
+      description: get reviews details
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Reviews'
+        404:
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Review Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+    post:
+      tags:
+        - Reviews
+      description: add reviews details
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Review object
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: Status code
+                    example: 200
+                  message:
+                    type: string
+                    description: Review added in book
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 400
+                  message:
+                    type: string
+                    description: status string
+                    example: "Bad Request"
+        404:
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Book Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 409
+                  message:
+                    type: string
+                    description: status string
+                    example: "Conflict"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+  /books/{id}/reviews/{review_id}:
+    get:
+      tags:
+        - Reviews
+      description: Returns Reviews Data
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: review_id
+          description: Reviwer id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: results matching criteria
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  result:
+                   $ref: '#/components/schemas/Review'
+        404:
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Review Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+    put:
+      tags:
+        - Reviews
+      description: Update Book details based on id
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: review_id
+          description: Reviwer id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Review object
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Review'
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  message:
+                    type: string
+                    example: update review data for book
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 400
+                  message:
+                    type: string
+                    description: status string
+                    example: "Bad Request"
+        404:
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Review Details Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 409
+                  message:
+                    type: string
+                    description: status string
+                    example: "Conflict"
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 500
+                  message:
+                    type: string
+                    description: status string
+                    example: "Internal Server Error"
+    delete:
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          description: book id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: review_id
+          description: Reviwer id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: delete review in book from DB
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 200
+                  message:
+                    type: string
+                    example: review deleted from book.
+        404:
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 404
+                  message:
+                    type: string
+                    description: status string
+                    example: "Review Id Not available"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 401
+                  message:
+                    type: string
+                    description: status string
+                    example: "Unauthorized user"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    description: status code
+                    example: 403
+                  message:
+                    type: string
+                    description: status string
+                    example: "Forbidden"
+    
+              
+                
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/sdineshpk/Book_API/1.0.0
+components:
+  schemas:
+    Book:
+      description: Book Details
+      required:
+        - id
+        - name
+        - autor
+        - price
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          example: "The Adventures of Tom Sawyer"
+        author:
+          type: array
+          items:
+            type: string
+            example: "Mark Twain"
+        price:
+          type: string
+          example: "$4.90"
+        reviews:
+          type: array
+          items:
+            type: object
+          example:
+            - {
+                "review_id": 768,
+                "reviwer": "Krish",
+                "message": "This is indeed an amazing book."
+              }
+        publisher:
+          type: object
+          example:
+             {
+               "publisher_id":"P1122",
+               "name": "Pearson",
+               "location": "London"
+             }
+    Books:
+      type: object
+      required:
+      - status
+      - results
+      properties:
+        status:
+          type: integer
+          example: 200
+        results:
+          type: array
+          items:
+           # type: object
+            $ref: '#/components/schemas/Book'
+    Review:
+      description: Single Review Object
+      type: object
+      properties:
+        review_id:
+          type: string
+          example: string
+        reviwer:
+          type: string
+          example: Krish
+        message:
+          type: string
+          example: This is indeed an amazing book.
+    Reviews:
+      description: Reviews Details
+      type: object
+      required:
+        - status
+        - results
+      properties:
+        status:
+          type: integer
+          example: 200
+        results:
+          type: array
+          items:
+            type: object
+          example:
+            - {
+                "review_id": "32432434",
+                "reviwer": "Krish",
+                "message": "This is indeed an amazing book."
+              }

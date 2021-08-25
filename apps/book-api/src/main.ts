@@ -7,13 +7,14 @@ import session = require('express-session');
 import { ExpressOIDC } from '@okta/oidc-middleware';
 import * as cors from 'cors';
 import * as mongoose from "mongoose";
+import dotenv = require('dotenv');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: false }));
-
+dotenv.config();
 // session support is required to use ExpressOIDC
 app.use(session({
   secret: 'this should be secure',

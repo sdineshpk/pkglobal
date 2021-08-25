@@ -27,6 +27,14 @@
   },
   "private": true,
   "dependencies": {
+    "@okta/jwt-verifier": "^2.3.0",
+    "@okta/oidc-middleware": "^4.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-openapi-validator": "^4.12.15",
+    "express-session": "^1.17.2",
+    "log4js": "^6.3.0",
+    "mongoose": "^5.13.7",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

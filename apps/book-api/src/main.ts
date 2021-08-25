@@ -6,7 +6,7 @@ import * as log4js from 'log4js';
 import session = require('express-session');
 import { ExpressOIDC } from '@okta/oidc-middleware';
 import * as cors from 'cors';
-
+import * as mongoose from "mongoose";
 const app = express();
 
 app.use(cors());
@@ -37,12 +37,12 @@ app.use(oidc.router);
 const log = log4js.getLogger("app");
 app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
 
-const spec = path.join("C:/Users/sdinesh/angular_work/pkglobal/apps/book-api/", 'api.yaml');
-console.log('test',__dirname);
+const spec = path.join(__dirname+"../../../../apps/book-api/", 'api.yaml');
+
 app.use('/spec', express.static(spec));
 app.use(
   OpenApiValidator.middleware({
-    apiSpec: 'C:/Users/sdinesh/angular_work/pkglobal/apps/book-api/api.yaml',
+    apiSpec: spec,
     validateRequests: true, // <-- to validate request
     validateResponses: true,
   }),
@@ -51,18 +51,39 @@ app.use(
 app.use('/',routes);
 
 app.use((err, req, res, next) => {
-  
-  console.error(err); // dump error to console for debug
   log.error("Something went wrong:", err);
   res.status(err.status || 500).json({
     message: err.message,
-    errors: err.errors,
+    error: err.stack,
   });
 });
 
+//mongoDb connection
+const databaseUser=process.env.DB_USER;
+const databasePass=process.env.DB_PASSWORD;
+const databaseName=process.env.DB_NAME;
+const uri = `mongodb+srv://${databaseUser}:${databasePass}@cluster0.wwxsa.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
+
+const options:mongoose.ConnectOptions={
+    useCreateIndex:true,
+    useFindAndModify:true
+};
+
 const port = process.env.port || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+
+mongoose.connect(uri,options, (err) => {
+  if (err) {
+    log.error('Mongoose Connection',err);
+  } else {
+    log.debug("Successfully Connected!");
+    console.log("Successfully Connected!");
+    const server = app.listen(port, () => {
+      console.log(`Listening at http://localhost:${port}/api`);
+      log.debug(`Listening at http://localhost:${port}/api`);
+    });
+    server.on('error', log.error);
+  }
 });
-server.on('error', console.error);
+
+
 

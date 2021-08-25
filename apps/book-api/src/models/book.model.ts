@@ -1,20 +1,5 @@
 import * as mongoose from "mongoose";
 
-const uri = "mongodb+srv://dinesh:Di9814756026@cluster0.wwxsa.mongodb.net/bookdb?retryWrites=true&w=majority";
-
-const options:mongoose.ConnectOptions={
-    //useNewUrlParser: true
-    useCreateIndex:true
-};
-
-mongoose.connect(uri,options, (err) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log("Successfully Connected!");
-  }
-});
-
 export interface Reviews extends mongoose.Document {
     book:string,
     review_id: string;

@@ -35,14 +35,14 @@ function ensureAuthenticated(req, res, next) {
     });
   }
 
-routes.get("/books",ensureAuthenticated, bookServ.allBooks);
-routes.get("/books/:id",ensureAuthenticated, bookServ.getBook);
-routes.post("/books",ensureAuthenticated, bookServ.addBook);
-routes.put("/books/:id",ensureAuthenticated, bookServ.updateBook);
-routes.delete("/books/:id",ensureAuthenticated, bookServ.deleteBook);
+routes.get("/books", bookServ.allBooks);
+routes.get("/books/:id", bookServ.getBook);
+routes.post("/books", bookServ.addBook);
+routes.put("/books/:id", bookServ.updateBook);
+routes.delete("/books/:id", bookServ.deleteBook);
 
-routes.get("/books/:id/reviews",ensureAuthenticated, reviewServ.allReviews);
-routes.get("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.getReview);
-routes.post("/books/:id/reviews",ensureAuthenticated, reviewServ.addReview);
-routes.put("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.updateReview);
-routes.delete("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.deleteReview);
+routes.get("/books/:id/reviews", reviewServ.allReviews);
+routes.get("/books/:id/reviews/:review_id", reviewServ.getReview);
+routes.post("/books/:id/reviews", reviewServ.addReview);
+routes.put("/books/:id/reviews/:review_id", reviewServ.updateReview);
+routes.delete("/books/:id/reviews/:review_id", reviewServ.deleteReview);

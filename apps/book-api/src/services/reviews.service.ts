@@ -11,7 +11,7 @@ export const allReviews = (req: Request, res: Response) => {
       Reviews.find((err, reviews) => {
           if (err) {
               writeLogError(log,err);
-              res.status(404).send({message:"Reviews Details Not available",error:err.stack});
+              res.status(404).send({message:"Reviews Details Not available"});
           } else {
           log.debug("Fetch All Reviews result Ended");
             res.send(reviews);
@@ -19,7 +19,7 @@ export const allReviews = (req: Request, res: Response) => {
         });
     }catch(err){
       writeLogError(log,err);
-      res.status(500).send({message:"Reviews Details Not available",error:err.stack});
+      res.status(500).send({message:"Reviews Details Not available"});
     }
 };
   
@@ -29,7 +29,7 @@ export const getReview = (req: Request, res: Response) => {
       Reviews.findById(req.params.review_id, (err, review) => {
           if (err) {
             writeLogError(log,err);
-            res.status(404).send({message:"Reviews Details Not available or id value is wrong",error:err.stack});
+            res.status(404).send({message:"Reviews Details Not available or id value is wrong"});
           } else {
               log.debug("Fetch Single Reviews result Ended");
             res.send(review);
@@ -37,7 +37,7 @@ export const getReview = (req: Request, res: Response) => {
         });
     }catch(err){
       writeLogError(log,err);
-      res.status(500).send({message:"Reviews Details Not available",error:err.stack});
+      res.status(500).send({message:"Reviews Details Not available"});
     }
 };
 
@@ -47,7 +47,7 @@ export const deleteReview = (req: Request, res: Response) => {
       Reviews.deleteOne({ _id: req.params.review_id }, (err) => {
           if (err) {
             writeLogError(log,err);
-              res.status(404).send({message:"Reviews Details Not available or id value is wrong",error:err.stack});
+              res.status(404).send({message:"Reviews Details Not available or id value is wrong"});
           } else {
           log.debug("Delete Single Reviews Ended");
             res.send({message:"Successfully Deleted Reviews"});
@@ -55,7 +55,7 @@ export const deleteReview = (req: Request, res: Response) => {
         });
     }catch(err){
       writeLogError(log,err);
-      res.status(500).send({message:"Reviews Details Not available",error:err.stack});
+      res.status(500).send({message:"Reviews Details Not available"});
     }
 };
 
@@ -68,7 +68,7 @@ export const updateReview = (req: Request, res: Response) => {
         (err, review) => {
           if (err) {
             writeLogError(log,err);
-              res.status(400).send({message:"Input are wrong for update Reviews Details",error:err.stack});
+              res.status(400).send({message:"Input are wrong for update Reviews Details"});
           } else {
               log.debug("Update Single Reviews Ended");
             res.send({result:review});
@@ -77,7 +77,7 @@ export const updateReview = (req: Request, res: Response) => {
       );
     }catch(err){
       writeLogError(log,err);
-      res.status(500).send({message:"Reviews Details Not available",error:err.stack});
+      res.status(500).send({message:"Reviews Details Not available"});
     }
 };
 
@@ -96,7 +96,7 @@ export const addReview = (req: Request, res: Response) => {
         Reviews.create(reviews,(err,review) => {
             if (err) {
               writeLogError(log,err);
-                res.status(400).send({message:"Input are wrong for add Reviews Details",error:err.stack});
+                res.status(400).send({message:"Input are wrong for add Reviews Details"});
             } else {
                 log.debug("Update Single Reviews Ended");
               res.send(review);
@@ -106,7 +106,7 @@ export const addReview = (req: Request, res: Response) => {
     });
   }catch(err){
     writeLogError(log,err);
-    res.status(500).send({message:"Reviews Details Not available or Inputs are invalid",error:err.stack});
+    res.status(500).send({message:"Reviews Details Not available or Inputs are invalid"});
   }
   
 }

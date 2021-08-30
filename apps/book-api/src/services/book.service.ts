@@ -1,6 +1,7 @@
 import {Book} from "../models/book.model";
 import { Request, Response } from "express";
 import * as log4js from 'log4js';
+import {writeLogError} from '../services/common.service'
 
 
 const log = log4js.getLogger("book");
@@ -10,7 +11,7 @@ export const allBooks = (req: Request, res: Response) => {
     try {
       Book.find((err, books) => {
         if (err) {
-            log.error('Fetch All Book Result Error',err);
+          writeLogError(log,err);
           res.status(404).send({message:"Book Details Not available",error:err.stack});
         } else {
         log.debug("Fetch All Books result Ended");
@@ -18,6 +19,7 @@ export const allBooks = (req: Request, res: Response) => {
         }
       });
     } catch (error) {
+      writeLogError(log,error);
       res.status(500).send({message:"Book Details Not available",error:error.stack});
     }
     
@@ -28,7 +30,7 @@ export const getBook = (req: Request, res: Response) => {
     try{
     Book.findById(req.params.id, (err, book) => {
         if (err) {
-            log.error('Fetch Single Book Result Error',err);
+          writeLogError(log,err);
           res.status(404).send({message:"Book Details Not available or id value is wrong",error:err.stack});
         } else {
             log.debug("Fetch Single Book result Ended");
@@ -36,6 +38,7 @@ export const getBook = (req: Request, res: Response) => {
         }
       });
     }catch(err){
+      writeLogError(log,err);
       res.status(500).send({message:"Book Details Not available",error:err.stack});
     }
 };
@@ -45,7 +48,7 @@ export const deleteBook = (req: Request, res: Response) => {
     try{
     Book.deleteOne({ _id: req.params.id }, (err) => {
         if (err) {
-            log.error('Delete Single Error',err);
+          writeLogError(log,err);
             res.status(404).send({message:"Book Details Not available or id value is wrong",error:err.stack});
         } else {
         log.debug("Delete Single Book Ended");
@@ -53,6 +56,7 @@ export const deleteBook = (req: Request, res: Response) => {
         }
       });
     }catch(err){
+      writeLogError(log,err);
       res.status(500).send({message:"Book Details Not available",error:err.stack});
     }
 };
@@ -65,7 +69,7 @@ export const updateBook = (req: Request, res: Response) => {
         req.body,
         (err, book) => {
           if (err) {
-              log.error('Update Book Error',err);
+            writeLogError(log,err);
               res.status(400).send({message:"Book Details Not available or Request for update book details are wrong",error:err.stack});
           } else {
               log.debug("Update Single Book Ended");
@@ -74,6 +78,7 @@ export const updateBook = (req: Request, res: Response) => {
         }
       );
     }catch(err){
+      writeLogError(log,err);
       res.status(500).send({message:"Request for update book details are wrong",error:err.stack});
     }
 };
@@ -84,7 +89,7 @@ export const addBook = (req: Request, res: Response) => {
     const book = new Book(req.body);
     book.save((err) => {
       if (err) {
-          log.error('Add Book Error',err);
+        writeLogError(log,err);
           res.status(400).send({message:"Request for update book details are wrong",error:err.stack});
       } else {
           log.debug("Add Book Ended");
@@ -92,6 +97,7 @@ export const addBook = (req: Request, res: Response) => {
       }
     });
   } catch (err) {
+    writeLogError(log,err);
     res.status(500).send({message:"Request for add book details are wrong",error:err.stack});
   }
     

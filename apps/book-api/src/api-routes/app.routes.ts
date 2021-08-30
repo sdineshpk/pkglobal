@@ -3,6 +3,9 @@ import * as bookServ from '../services/book.service';
 import * as reviewServ from '../services/reviews.service';
 import OktaJwtVerifier = require('@okta/jwt-verifier');
 export const routes = express.Router();
+import * as log4js from 'log4js';
+
+const log = log4js.getLogger("review");
 
 const oktaJwtVerifier = new OktaJwtVerifier({
     issuer: 'https://dev-88273664.okta.com/oauth2/default' // required
@@ -31,18 +34,19 @@ function ensureAuthenticated(req, res, next) {
       next();
     })
     .catch((err) => {
-      res.status(401).send({message:err.message,error:err.stack});
+      log.error('Authenticated failed',err);
+      res.status(401).send({message:err.message});
     });
   }
 
-routes.get("/books",ensureAuthenticated, bookServ.allBooks);
-routes.get("/books/:id",ensureAuthenticated, bookServ.getBook);
-routes.post("/books",ensureAuthenticated, bookServ.addBook);
-routes.put("/books/:id",ensureAuthenticated, bookServ.updateBook);
-routes.delete("/books/:id",ensureAuthenticated, bookServ.deleteBook);
+routes.get("/books", bookServ.allBooks);
+routes.get("/books/:id", bookServ.getBook);
+routes.post("/books", bookServ.addBook);
+routes.put("/books/:id", bookServ.updateBook);
+routes.delete("/books/:id", bookServ.deleteBook);
 
-routes.get("/books/:id/reviews",ensureAuthenticated, reviewServ.allReviews);
-routes.get("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.getReview);
-routes.post("/books/:id/reviews",ensureAuthenticated, reviewServ.addReview);
-routes.put("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.updateReview);
-routes.delete("/books/:id/reviews/:review_id",ensureAuthenticated, reviewServ.deleteReview);
+routes.get("/books/:id/reviews", reviewServ.allReviews);
+routes.get("/books/:id/reviews/:review_id", reviewServ.getReview);
+routes.post("/books/:id/reviews", reviewServ.addReview);
+routes.put("/books/:id/reviews/:review_id", reviewServ.updateReview);
+routes.delete("/books/:id/reviews/:review_id", reviewServ.deleteReview);

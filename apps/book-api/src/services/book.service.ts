@@ -3,11 +3,10 @@ import { Request, Response } from "express";
 import * as log4js from 'log4js';
 import {writeLogError} from '../services/common.service'
 
-
-const log = log4js.getLogger("book");
+const log = log4js.getLogger("info");
 
 export const allBooks = (req: Request, res: Response) => {
-    log.debug("Fetch All Books result started");
+    log.info("Fetch All Books result started");
     try {
       Book.find((err, books) => {
         if (err) {

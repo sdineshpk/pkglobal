@@ -8,7 +8,7 @@ import { ExpressOIDC } from '@okta/oidc-middleware';
 import * as cors from 'cors';
 import * as mongoose from "mongoose";
 import dotenv = require('dotenv');
-const app = express();
+export const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -27,8 +27,8 @@ const oidc = new ExpressOIDC({
   issuer: 'https://dev-88273664.okta.com/oauth2/default',
   client_id: '0oa1h0uljcJ5FhQMd5d7',
   client_secret: 'FaZHabf6fK4v9JUdC8L944F3qHoCgBURGfzxwlOr',
-  redirect_uri: 'http://localhost:3333/authorization-code/callback',
-  scope: 'openid profile'
+  //redirect_uri: 'http://localhost:3333/authorization-code/callback',
+  scope: "openid profile email offline_access"
 });
 
 // ExpressOIDC attaches handlers for the /login and /authorization-code/callback routes
@@ -36,6 +36,12 @@ app.use(oidc.router);
 
 //Logger
 const log = log4js.getLogger("app");
+log4js.configure({
+  appenders: { error: { type: "file", filename: "log/error.log" },
+               info: { type: "file", filename: "log/info.log" },},
+  categories: { default: { appenders: ["error"], level: "error" },
+                info: { appenders: ["info"], level: "trace" } }
+});
 app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
 
 const spec = path.join(__dirname+"../../../../apps/book-api/", 'api.yaml');
@@ -67,7 +73,8 @@ const uri = `mongodb+srv://${databaseUser}:${databasePass}@cluster0.wwxsa.mongod
 
 const options:mongoose.ConnectOptions={
     useCreateIndex:true,
-    useFindAndModify:true
+    useFindAndModify:true,
+    useUnifiedTopology: true
 };
 
 const port = process.env.port || 3333;

@@ -77,7 +77,8 @@ const options:mongoose.ConnectOptions={
     useUnifiedTopology: true
 };
 
-const port = process.env.port || 3333;
+const port = parseInt(process.env.port || '3333');
+const host=process.env.host||"0.0.0.0";
 
 mongoose.connect(uri,options, (err) => {
   if (err) {
@@ -85,13 +86,10 @@ mongoose.connect(uri,options, (err) => {
   } else {
     log.debug("Successfully Connected!");
     console.log("Successfully Connected!");
-    const server = app.listen(port, () => {
+    const server = app.listen(port,host, () => {
       console.log(`Listening at http://localhost:${port}/api`);
       log.debug(`Listening at http://localhost:${port}/api`);
     });
     server.on('error', log.error);
   }
 });
-
-
-

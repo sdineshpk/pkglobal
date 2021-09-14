@@ -10,7 +10,9 @@ import * as mongoose from "mongoose";
 import * as dotenv from 'dotenv';
 export const app = express();
 
-dotenv.config();
+dotenv.config({
+  path: path.join(__dirname+'../../../../', '.env')
+});
 app.use(cors());
 app.use(express.json());
 app.use(express.text());
@@ -67,9 +69,9 @@ app.use((err, req, res, next) => {
 });
 
 //mongoDb connection
-const databaseUser=process.env.DB_USER|| 'dinesh';//process.env.DB_USER;
-const databasePass=process.env.DB_PASSWORD|| 'Di9814756026';//process.env.DB_PASSWORD;
-const databaseName=process.env.DB_NAME|| 'bookdb';//process.env.DB_NAME;
+const databaseUser=process.env.DB_USER;
+const databasePass=process.env.DB_PASSWORD;
+const databaseName=process.env.DB_NAME;
 console.log("user",process.env.DB_USER);
 const uri = `mongodb+srv://${databaseUser}:${databasePass}@cluster0.wwxsa.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
 

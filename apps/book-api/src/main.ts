@@ -82,7 +82,7 @@ const options:mongoose.ConnectOptions={
     useNewUrlParser:true
 };
 
-const port = parseInt(process.env.port || '3333');
+const port = parseInt(process.env.port || '3000');
 const host=process.env.host||"0.0.0.0";
 
 mongoose.connect(uri,options, (err) => {

@@ -17,11 +17,11 @@ app.use(express.text());
 app.use(express.urlencoded({ extended: false }));
 
 // session support is required to use ExpressOIDC
-app.use(session({
-  secret: 'this should be secure',
-  resave: true,
-  saveUninitialized: false
-}));
+// app.use(session({
+//   secret: 'this should be secure',
+//   resave: true,
+//   saveUninitialized: false
+// }));
 
 const oidc = new ExpressOIDC({
   appBaseUrl:'http://localhost:3333',
@@ -67,9 +67,10 @@ app.use((err, req, res, next) => {
 });
 
 //mongoDb connection
-const databaseUser=process.env.DB_USER;
-const databasePass=process.env.DB_PASSWORD;
-const databaseName=process.env.DB_NAME;
+const databaseUser=process.env.DB_USER|| 'dinesh';//process.env.DB_USER;
+const databasePass=process.env.DB_PASSWORD|| 'Di9814756026';//process.env.DB_PASSWORD;
+const databaseName=process.env.DB_NAME|| 'bookdb';//process.env.DB_NAME;
+console.log("user",process.env.DB_USER);
 const uri = `mongodb+srv://${databaseUser}:${databasePass}@cluster0.wwxsa.mongodb.net/${databaseName}?retryWrites=true&w=majority`;
 
 const options:mongoose.ConnectOptions={

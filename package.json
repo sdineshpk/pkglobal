@@ -25,6 +25,9 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help"
   },
+  "engines": {
+    "node": "14.17.1"
+  },
   "private": true,
   "dependencies": {
     "@okta/jwt-verifier": "^2.3.0",

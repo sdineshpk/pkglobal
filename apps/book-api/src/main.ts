@@ -75,7 +75,8 @@ const uri = `mongodb+srv://${databaseUser}:${databasePass}@cluster0.wwxsa.mongod
 const options:mongoose.ConnectOptions={
     useCreateIndex:true,
     useFindAndModify:true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useNewUrlParser:true
 };
 
 const port = parseInt(process.env.port || '3333');

@@ -8,11 +8,12 @@ export interface Reviews extends mongoose.Document {
 }
 
 export interface IBook extends mongoose.Document {
-  title: string;
+    id?:string;
+  name: string;
   author: Array<string>;
   price:string;
   reviews:Array<Reviews>;
-  publiser:{
+  publisher:{
       publisher_id:string,
       name:string,
       location:string

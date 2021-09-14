@@ -1,7 +1,7 @@
 import {Book} from "../models/book.model";
 import { Request, Response } from "express";
 import * as log4js from 'log4js';
-import {writeLogError} from '../services/common.service'
+import {writeLogError} from '../services/common.service';
 
 const log = log4js.getLogger("info");
 

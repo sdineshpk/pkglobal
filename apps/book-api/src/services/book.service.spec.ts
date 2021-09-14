@@ -1,13 +1,142 @@
-import request = require('supertest');
-//import {main} from '../main';
+import * as request from 'supertest';
+import {app} from '../main';
+import { Book , Reviews} from '../models/book.model';
+import {connect} from './db'
+import { book, booksList, review } from '../tests/mock-data/mock-data';
 
-// test('Error for wrong input',async ()=>{
-//     await request(app).get('/api/books/&655454tt')
-//     .expect('{"message":"Not found search result for requested value"}');
-   
-// })
-// test('fetch list of book by name',async ()=>{
-//     const result=await request(app).get('/api/books/test');
-//     expect(result.status).toEqual(200);
-//     expect(result.text).toEqual("[{\"id\":\"X-5YBQAAQBAJ\",\"title\":\"The Test Book\",\"imageLink\":\"http://books.google.com/books/content?id=X-5YBQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api\",\"description\":\"This pocket-sized compendium of sixty four of the world's most useful tests is a vital tool for anyone looking to gauge their abilities and improve their performance. From intelligence to personality type via creativity and leadership skills, Krogerus and Tschppeler will help you see how you fare on every essential trait you need to succeed. Beyond your own abilities, The Test Book also provides sample diagnostic tests for your career, relationship and business, sketching out not just what your skills are but how well you're utilising them too. Some are old favourites - GMAT, MBTI, IQ, EQ - and many more are little-known tests with genuinely new insights. Every single one has been condensed to just a few pages, leading you to the quickest route to self-knowledge. With in-depth analysis of the history, strengths and weaknesses of each test and what your answers mean for you, The Test Book is the fastest and most entertaining way to equip yourself for happiness and success.\",\"authors\":[\"Mikael Krogerus\",\"Roman Tschäppeler\"],\"publisher\":\"Profile Books\",\"pageCount\":298,\"language\":\"en\"},{\"id\":\"C3fIJNPQfrsC\",\"title\":\"Cambridge Preparation for the TOEFL® Test Book with CD-ROM\",\"imageLink\":\"http://books.google.com/books/content?id=C3fIJNPQfrsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api\",\"description\":\"Provides test-taking strategies, skill-building exercises, sample essays and speaking responses, and practice tests.\",\"authors\":[\"Jolene Gear\",\"Robert Gear\"],\"ratingsCount\":3,\"publisher\":\"Cambridge University Press\",\"pageCount\":616,\"language\":\"en\"},{\"id\":\"3_1WDwAAQBAJ\",\"title\":\"The Astronaut Selection Test Book\",\"imageLink\":\"http://books.google.com/books/content?id=3_1WDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api\",\"description\":\"_________________________ As featured in the Times, Daily Telegraph, BBC Radio 4 and BBC Breakfast ***The puzzle book of 2018*** Have YOU got what it takes to be an astronaut? This book will help readers of all ages find out. Featuring 100 real astronaut tests and exercises from the European Space Agency’s rigorous selection process, ranging from easy to fiendishly hard, The Astronaut Selection Test Book goes where no puzzle book has gone before. Including puzzles and tests on: · visual perception and logic · mental arithmetic and concentration · psychological readiness · teamwork and leadership · survival, physical and medical skills · foreign languages (every astronaut has to know Russian!) and much more, this richly illustrated book draws on Tim Peake's first-hand experience of applying to be an astronaut in 2008, when he and five others were chosen – out of over 8,000 applications! We’ve all dreamed of being an astronaut, though of the estimated 100 billion people who have ever lived, only 557 people have travelled to space. But with this unprecedented look into real astronaut selection, you might just find out your dreams can become reality... _________________________ HOUSTON, WE HAVE A PROBLEM SOLVER... _________________________ Tim Peake and the ESA will receive no royalties from this book; instead, they will be donated to the Prince's Trust charity.\",\"authors\":[\"Tim Peake\",\"The European Space Agency\"],\"publisher\":\"Random House\",\"pageCount\":256,\"language\":\"en\"},{\"id\":\"K9Q_vgAACAAJ\",\"title\":\"The Official Guide to the GRE General Test, Third Edition\",\"imageLink\":\"http://books.google.com/books/content?id=K9Q_vgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"description\":\"Get the only official guide to the GRE® General Test that comes straight from the test makers! If you're looking for the best, most authoritative guide to the GRE General Test, you've found it! The Official Guide to the GRE General Test is the only GRE guide specially created by ETS--the people who actually make the test. It's packed with everything you need to do your best on the test--and move toward your graduate or business school degree. Only ETS can show you exactly what to expect on the test, tell you precisely how the test is scored, and give you hundreds of authentic test questions for practice! That makes this guide your most reliable and accurate source for everything you need to know about the GRE revised General Test. No other guide to the GRE General Test gives you all this: • Four complete, real tests--two in the book and two on CD-ROM • Hundreds of authentic test questions--so you can study with the real thing • In-depth descriptions of the Verbal Reasoning and Quantitative Reasoning measures plus valuable tips for answering each question type • Quantitative Reasoning problem-solving steps and strategies to help you get your best score • Detailed overview of the two types of Analytical Writing essay tasks including scored sample responses and actual raters' comments Everything you need to know about the test, straight from the test makers!\",\"authors\":[\"Educational Testing Service\"],\"publisher\":\"McGraw-Hill Education\",\"pageCount\":608,\"language\":\"en\"},{\"id\":\"YyoDiD5hcP0C\",\"title\":\"Polyester and Belted Tire Road Test Evaluations. Volume I of II. Final Report and Appendices I Through IV.\",\"imageLink\":\"http://books.google.com/books/content?id=YyoDiD5hcP0C&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"James E. Dobbins\"],\"pageCount\":75,\"language\":\"en\"},{\"id\":\"BqLQAAAAMAAJ\",\"title\":\"Experimental Concept Formation Test for Preschool Deaf\",\"imageLink\":\"http://books.google.com/books/content?id=BqLQAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"Edgar L. Lowell\",\"Newton S. Metfessel\"],\"pageCount\":229,\"language\":\"en\"},{\"id\":\"KupkAAAAMAAJ\",\"title\":\"A Speech-threshold Test for Children\",\"imageLink\":\"http://books.google.com/books/content?id=KupkAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"Rin C. Steinhoff\"],\"pageCount\":362,\"language\":\"en\"},{\"id\":\"6V73HEh2N7AC\",\"title\":\"Interpreting Drinking Water Test Results\",\"imageLink\":\"http://books.google.com/books/content?id=6V73HEh2N7AC&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"Christine Mechenich\",\"Elaine Andrews\"],\"pageCount\":12,\"language\":\"en\"},{\"id\":\"oXnVAAAAMAAJ\",\"title\":\"The Validity of the Slosson Intelligence Test for Children and Adults as a Predictor of Academic Achievement in Elementary Grades\",\"imageLink\":\"http://books.google.com/books/content?id=oXnVAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"Lynn La Follette Wallwork\"],\"pageCount\":210,\"language\":\"en\"},{\"id\":\"W0dOdZHB0-sC\",\"title\":\"Motorcycle Brake Test Procedure Validation. Summary Report. Final Report\",\"imageLink\":\"http://books.google.com/books/content?id=W0dOdZHB0-sC&printsec=frontcover&img=1&zoom=1&source=gbs_api\",\"authors\":[\"M. L. Love\"],\"pageCount\":13,\"language\":\"en\"}]");
-// })
+describe('test book api', () => {
+    jest.setTimeout(80000);
+    const authToken =
+        "Bearer eyJraWQiOiJiNkY1eWJKMzF3bkcyVzgtQkMyeXozeVhUSTUtWGFKOHBCcElSSk5LRTB3IiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULmVLcXdlaHlNQ1JoQTNaTXluanh5cG9LZ2JiZFdncExzZzZhOG5lc2VRQkkiLCJpc3MiOiJodHRwczovL2Rldi04ODI3MzY2NC5va3RhLmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2MzE1MTg5NzEsImV4cCI6MTYzMTUyMjU3MSwiY2lkIjoiMG9hMWgwdWxqY0o1RmhRTWQ1ZDciLCJzY3AiOlsiYm9va3Njb3BlIl0sInN1YiI6IjBvYTFoMHVsamNKNUZoUU1kNWQ3In0.ddRphxWdCMSwiYVpz91-ZyrN72ueQdkEf72DBk4QlAqmdO-GBVcEAULZn6ePO2Q1awhHTJpeEDgplwqgbqC3l6woCJYbv6ub1oGGZEYe4CxpixybiCOcSetqfBStQtCYSdDny2GCCeEFxtJvei3UTxojqoRskfV31tOwkvp-lYXShTdOZGN4SQiIs2jNTKxpZ8xTulcESRit_9WRTQdFRo835Q_3cHJlbmRdO-vyxb2QJPpxBOBS0vSCjkbSI7IXJ0aY13ff_V0UivDclRhW15eniTdVgdQQ5RLmj_gHLOPFhCcRvBg0KqQrvjbwRPPwtavj1Jzjv42Pn5mpagDbew";
+       // "Bearer ";
+
+    beforeAll( async()=>{await connect()});
+
+    describe("Books Success CRUD Operations", () => {
+        it('fetch list all books', (done)=>{
+            Book.find = jest.fn().mockImplementationOnce(() => ({
+                                populate: jest.fn().mockResolvedValueOnce(booksList),
+            }));
+            request(app).get('/books').set({ Authorization: authToken }).expect(200,done);
+        });
+        it("Should create a book", (done) => {
+            Book.prototype.save = jest
+                .fn()
+                .mockResolvedValueOnce({ ...book, _id: "B111" });
+            request(app).post('/books').set({ Authorization: authToken }).send(book).expect(200,done);
+        });
+        it("Should fetch book details by id", async (done) => {
+            Book.findById = jest.fn().mockResolvedValueOnce({ ...book });
+            request(app).get('/books/B111').set({ Authorization: authToken }).expect(200,done);
+        });
+
+        it("Should update book by id", async (done) => {
+            Book.findByIdAndUpdate = jest
+                .fn()
+                .mockResolvedValueOnce({ ...book, name: "Jokob" });
+            request(app).put('/books/B111').set({ Authorization: authToken }).send(book).expect(200,done);
+        });
+
+        it("Should delete a book by id", async (done) => {
+            Book.deleteOne = jest.fn().mockResolvedValueOnce({ ...book });
+            request(app).delete('/books/B111').set({ Authorization: authToken }).expect(200,done);
+        });
+    });
+
+    describe("Reviews Success CRUD Operations", () => {
+        it('fetch list all books', (done)=>{
+            Reviews.find = jest.fn().mockImplementationOnce(() => ({
+                                populate: jest.fn().mockResolvedValueOnce([review]),
+            }));
+            request(app).get('/books').set({ Authorization: authToken }).expect(200,done);
+        });
+        it("Should create a book", (done) => {
+            Reviews.prototype.save = jest
+                .fn()
+                .mockResolvedValueOnce({ ...review, _id: "R111" });
+            request(app).post('/books/B111/reviews').set({ Authorization: authToken }).send(review).expect(200,done);
+        });
+        it("Should fetch book details by id", async (done) => {
+            Reviews.findById = jest.fn().mockResolvedValueOnce({ ...review });
+            request(app).get('/books/B111/reviews/R111').set({ Authorization: authToken }).expect(200,done);
+        });
+
+        it("Should update book by id", async (done) => {
+            Reviews.findByIdAndUpdate = jest
+                .fn()
+                .mockResolvedValueOnce({ ...review});
+            request(app).put('/books/B111/reviews').set({ Authorization: authToken }).send(review).expect(200,done);
+        });
+
+        it("Should delete a book by id", async (done) => {
+            Reviews.deleteOne = jest.fn().mockResolvedValueOnce({ ...review });
+            request(app).delete('/books/B111/reviews').set({ Authorization: authToken }).expect(200,done);
+        });
+    });
+
+    describe("Books Failure CRUD Operations", () => {
+
+        it("Should raise an error when no auth added in request", async (done) => {
+            request(app).get('/books').expect(401,done);
+        });
+
+        it("Should raise an error to fetch all books", async (done) => {
+            Book.find = jest.fn().mockImplementationOnce(() => ({
+                populate: jest.fn().mockRejectedValueOnce([book]),
+            }));
+            request(app).get('/books').set({ Authorization: authToken }).expect(404,done);
+        });
+        it("Should raise an error to create a book", async (done) => {
+            Book.prototype.save = jest
+            .fn()
+            .mockRejectedValueOnce({ ...book, _id: "B111" });
+            request(app).post('/books').set({ Authorization: authToken }).send(book).expect(400,done);
+        });
+
+        it("Should raise an error to fetch a book", async (done) => {
+            Book.findById = jest.fn().mockRejectedValueOnce({ ...book });
+            request(app).get('/books/B111').set({ Authorization: authToken }).expect(404,done);
+        });
+
+        it("Should raise an error to update a book", async (done) => {
+            Book.findByIdAndUpdate = jest
+            .fn()
+            .mockRejectedValueOnce({ ...book, name: "Jokob" });
+            request(app).put('/books/B111').set({ Authorization: authToken }).send(book).expect(400,done);
+        });
+
+        it("Should raise an error to delete a book", async (done) => {
+            Book.deleteOne = jest.fn().mockRejectedValueOnce({ ...book });
+            request(app).delete('/books/B111').set({ Authorization: authToken }).expect(404,done);
+        });
+    });
+    describe("Reviews Failure CRUD Operations", () => {
+        it("Should raise an error to fetch all reviews", async (done) => {
+            Reviews.find = jest.fn().mockImplementationOnce(() => ({
+                populate: jest.fn().mockRejectedValueOnce([review]),
+            }));
+            request(app).get('/books/B111/reviews').set({ Authorization: authToken }).expect(404,done);
+        });
+        it("Should raise an error to create a review", async (done) => {
+            Reviews.prototype.save = jest
+            .fn()
+            .mockRejectedValueOnce({ ...review, _id: "R111" });
+            request(app).post('/books/B111/reviews').set({ Authorization: authToken }).send(review).expect(400,done);
+        });
+
+        it("Should raise an error to get a review", async (done) => {
+            Reviews.findById = jest.fn().mockRejectedValueOnce({...review});
+            request(app).get('/books/B111/reviews/R111').set({ Authorization: authToken }).expect(404,done);
+        });
+
+        it("Should raise an error to update a review", async (done) => {
+            Reviews.findByIdAndUpdate = jest.fn().mockRejectedValueOnce({...review});
+            request(app).put('/books/B111/reviews/R111').set({ Authorization: authToken }).send(review).expect(400,done);
+        });
+
+        it("Should raise an error to delete a review", async (done) => {
+            Reviews.deleteOne = jest.fn().mockRejectedValueOnce({...review});
+            request(app).delete('/books/B111/reviews/R111').set({ Authorization: authToken }).expect(404,done);
+        });
+    });
+});

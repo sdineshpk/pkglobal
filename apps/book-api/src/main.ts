@@ -91,10 +91,10 @@ mongoose.connect(uri,options, (err) => {
   } else {
     log.debug("Successfully Connected!");
     console.log("Successfully Connected!");
-    const server = app.listen(port,host, () => {
+    app.listen(port,host, () => {
       console.log(`Listening at http://localhost:${port}/api`);
       log.debug(`Listening at http://localhost:${port}/api`);
     });
-    server.on('error', log.error);
+    // server.on('error', log.error);
   }
 });

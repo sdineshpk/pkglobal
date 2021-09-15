@@ -17,29 +17,54 @@ describe('test book api', () => {
             Book.find = jest.fn().mockImplementationOnce(() => ({
                                 populate: jest.fn().mockResolvedValueOnce(booksList),
             }));
-            request(app).get('/books').set({ Authorization: authToken }).expect(200,done);
+            request(app).get('/books').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual(booksList);
+                done();
+            });
+            //.expect(200,done);
         });
         it("Should create a book", (done) => {
             Book.prototype.save = jest
                 .fn()
                 .mockResolvedValueOnce({ ...book, _id: "B111" });
-            request(app).post('/books').set({ Authorization: authToken }).send(book).expect(200,done);
+            request(app).post('/books').set({ Authorization: authToken }).send(book).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...book, _id: "B111" });
+                done();
+            });
+            //expect(200,done);
         });
         it("Should fetch book details by id", async (done) => {
             Book.findById = jest.fn().mockResolvedValueOnce({ ...book });
-            request(app).get('/books/B111').set({ Authorization: authToken }).expect(200,done);
+            request(app).get('/books/B111').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...book, _id: "B111" });
+                done();
+            });
+            //.expect(200,done);
         });
 
         it("Should update book by id", async (done) => {
             Book.findByIdAndUpdate = jest
                 .fn()
                 .mockResolvedValueOnce({ ...book, name: "Jokob" });
-            request(app).put('/books/B111').set({ Authorization: authToken }).send(book).expect(200,done);
+            request(app).put('/books/B111').set({ Authorization: authToken }).send(book).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...book, name: "Jokob",_id: "B111" });
+                done();
+            });
+            //.expect(200,done);
         });
 
         it("Should delete a book by id", async (done) => {
             Book.deleteOne = jest.fn().mockResolvedValueOnce({ ...book });
-            request(app).delete('/books/B111').set({ Authorization: authToken }).expect(200,done);
+            request(app).delete('/books/B111').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({message:"Successfully Deleted Book"});
+                done();
+            });
+            //.expect(200,done);
         });
     });
 
@@ -48,29 +73,54 @@ describe('test book api', () => {
             Reviews.find = jest.fn().mockImplementationOnce(() => ({
                                 populate: jest.fn().mockResolvedValueOnce([review]),
             }));
-            request(app).get('/books').set({ Authorization: authToken }).expect(200,done);
+            request(app).get('/books').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual([review]);
+                done();
+            });
+            //.expect(200,done);
         });
         it("Should create a book", (done) => {
             Reviews.prototype.save = jest
                 .fn()
                 .mockResolvedValueOnce({ ...review, _id: "R111" });
-            request(app).post('/books/B111/reviews').set({ Authorization: authToken }).send(review).expect(200,done);
+            request(app).post('/books/B111/reviews').set({ Authorization: authToken }).send(review).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...review, _id: "R111" });
+                done();
+            });
+            //expect(200,done);
         });
         it("Should fetch book details by id", async (done) => {
             Reviews.findById = jest.fn().mockResolvedValueOnce({ ...review });
-            request(app).get('/books/B111/reviews/R111').set({ Authorization: authToken }).expect(200,done);
+            request(app).get('/books/B111/reviews/R111').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...review, _id: "R111" });
+                done();
+            });
+            //.expect(200,done);
         });
 
         it("Should update book by id", async (done) => {
             Reviews.findByIdAndUpdate = jest
                 .fn()
                 .mockResolvedValueOnce({ ...review});
-            request(app).put('/books/B111/reviews').set({ Authorization: authToken }).send(review).expect(200,done);
+            request(app).put('/books/B111/reviews').set({ Authorization: authToken }).send(review).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({ ...review, _id: "R111" });
+                done();
+            });
+            //.expect(200,done);
         });
 
         it("Should delete a book by id", async (done) => {
             Reviews.deleteOne = jest.fn().mockResolvedValueOnce({ ...review });
-            request(app).delete('/books/B111/reviews').set({ Authorization: authToken }).expect(200,done);
+            request(app).delete('/books/B111/reviews').set({ Authorization: authToken }).then((res)=>{
+                expect(res.statusCode).toEqual(200);
+                expect(res.body).toEqual({message:"Successfully Deleted Reviews"});
+                done();
+            });
+            //.expect(200,done);
         });
     });
 
